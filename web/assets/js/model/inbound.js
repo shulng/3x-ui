@@ -419,42 +419,6 @@ class WsStreamSettings extends XrayCommonClass {
     }
 }
 
-class HttpStreamSettings extends XrayCommonClass {
-    constructor(
-        path = '/',
-        host = [''],
-    ) {
-        super();
-        this.path = path;
-        this.host = host.length === 0 ? [''] : host;
-    }
-
-    addHost(host) {
-        this.host.push(host);
-    }
-
-    removeHost(index) {
-        this.host.splice(index, 1);
-    }
-
-    static fromJson(json = {}) {
-        return new HttpStreamSettings(json.path, json.host);
-    }
-
-    toJson() {
-        let host = [];
-        for (let i = 0; i < this.host.length; ++i) {
-            if (!ObjectUtil.isEmpty(this.host[i])) {
-                host.push(this.host[i]);
-            }
-        }
-        return {
-            path: this.path,
-            host: host,
-        }
-    }
-}
-
 class GrpcStreamSettings extends XrayCommonClass {
     constructor(
         serviceName = "",
@@ -958,7 +922,6 @@ class StreamSettings extends XrayCommonClass {
         tcpSettings = new TcpStreamSettings(),
         kcpSettings = new KcpStreamSettings(),
         wsSettings = new WsStreamSettings(),
-        httpSettings = new HttpStreamSettings(),
         grpcSettings = new GrpcStreamSettings(),
         httpupgradeSettings = new HTTPUpgradeStreamSettings(),
         xhttpSettings = new xHTTPStreamSettings(),
@@ -973,7 +936,6 @@ class StreamSettings extends XrayCommonClass {
         this.tcp = tcpSettings;
         this.kcp = kcpSettings;
         this.ws = wsSettings;
-        this.http = httpSettings;
         this.grpc = grpcSettings;
         this.httpupgrade = httpupgradeSettings;
         this.xhttp = xhttpSettings;
@@ -1023,7 +985,6 @@ class StreamSettings extends XrayCommonClass {
             TcpStreamSettings.fromJson(json.tcpSettings),
             KcpStreamSettings.fromJson(json.kcpSettings),
             WsStreamSettings.fromJson(json.wsSettings),
-            HttpStreamSettings.fromJson(json.httpSettings),
             GrpcStreamSettings.fromJson(json.grpcSettings),
             HTTPUpgradeStreamSettings.fromJson(json.httpupgradeSettings),
             xHTTPStreamSettings.fromJson(json.xhttpSettings),
@@ -1042,7 +1003,6 @@ class StreamSettings extends XrayCommonClass {
             tcpSettings: network === 'tcp' ? this.tcp.toJson() : undefined,
             kcpSettings: network === 'kcp' ? this.kcp.toJson() : undefined,
             wsSettings: network === 'ws' ? this.ws.toJson() : undefined,
-            httpSettings: network === 'http' ? this.http.toJson() : undefined,
             grpcSettings: network === 'grpc' ? this.grpc.toJson() : undefined,
             httpupgradeSettings: network === 'httpupgrade' ? this.httpupgrade.toJson() : undefined,
             xhttpSettings: network === 'xhttp' ? this.xhttp.toJson() : undefined,
